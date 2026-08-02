@@ -40,7 +40,7 @@ function Index() {
           className="mx-auto w-full max-w-[300px] rounded-xl sm:max-w-[340px]"
         />
 
-        <div className="mt-5 flex justify-center sm:mt-6">
+        <div className="mt-6 flex justify-center sm:mt-7">
           <span className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-[10px] font-extrabold uppercase tracking-widest text-brand sm:text-[11px]">
             <span className="h-1.5 w-1.5 rounded-full bg-brand" />
             Exclusive Offer
