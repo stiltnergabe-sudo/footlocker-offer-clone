@@ -5,16 +5,16 @@ import giftCard from "@/assets/giftcard.png";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Get a $50 Foot Locker Gift Card Today" },
+      { title: "Get a $500 Foot Locker Gift Card Today" },
       {
         name: "description",
         content:
-          "Claim your exclusive $50 Foot Locker gift card offer. Apply, enter your info, complete deals, and claim your reward.",
+          "Claim your exclusive $500 Foot Locker gift card offer. Apply, enter your info, complete deals, and claim your reward.",
       },
-      { property: "og:title", content: "Get a $50 Foot Locker Gift Card Today" },
+      { property: "og:title", content: "Get a $500 Foot Locker Gift Card Today" },
       {
         property: "og:description",
-        content: "Unlock your exclusive $50 Foot Locker reward in four simple steps.",
+        content: "Unlock your exclusive $500 Foot Locker reward in four simple steps.",
       },
     ],
   }),
