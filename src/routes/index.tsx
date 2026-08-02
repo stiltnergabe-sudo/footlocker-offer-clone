@@ -47,8 +47,10 @@ function Index() {
           </span>
         </div>
 
-        <h1 className="mt-3 text-center text-[1.6rem] font-extrabold leading-[1.15] tracking-tight text-foreground sm:mt-4 sm:text-[2.1rem]">
-          Get a <span className="text-brand">$500</span> Foot Locker
+        <h1 className="mt-4 text-center text-[1.55rem] font-extrabold leading-[1.2] tracking-tight text-foreground sm:mt-5 sm:text-[1.95rem]">
+          Get a <span className="text-brand">$500</span> Foot
+          <br />
+          Locker
           <br />
           Gift Card Today
         </h1>
