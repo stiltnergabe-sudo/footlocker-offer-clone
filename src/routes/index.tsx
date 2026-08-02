@@ -61,7 +61,7 @@ function Index() {
         <h2 className="mt-7 text-center text-lg font-extrabold text-foreground sm:mt-8 sm:text-xl">How to Start</h2>
 
 
-        <ol className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
+        <ol className="mt-5 space-y-4 sm:mt-6 sm:space-y-4">
           {steps.map((step, i) => (
             <li
               key={step}
