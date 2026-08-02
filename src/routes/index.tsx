@@ -54,7 +54,7 @@ function Index() {
           <br />
           Gift Card Today
         </h1>
-        <p className="mt-2 text-center text-sm font-medium text-muted-foreground sm:mt-3 sm:text-base">
+        <p className="mt-3 text-center text-sm font-medium text-muted-foreground sm:mt-4 sm:text-base">
           Unlock your exclusive reward.
         </p>
 
