@@ -63,7 +63,7 @@ function Index() {
           {steps.map((step, i) => (
             <li
               key={step}
-              className="flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-4 shadow-sm sm:px-5 sm:py-4.5"
+              className="flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-4 sm:px-5 sm:py-4.5"
             >
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-foreground text-sm font-extrabold text-primary-foreground sm:h-9 sm:w-9 sm:text-base">
                 {i + 1}
