@@ -81,7 +81,7 @@ function Index() {
         <a
           href="https://trksy.org/aff_c?offer_id=1727&aff_id=152053"
           rel="noopener noreferrer"
-          className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-xl bg-foreground py-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-[1.01] sm:mt-6 sm:py-4.5 sm:text-lg"
+          className="mt-6 flex w-full items-center justify-center gap-2.5 rounded-xl bg-foreground py-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-[1.01] sm:mt-7 sm:py-4.5 sm:text-lg"
         >
           Get Started
           <ArrowRight className="h-5 w-5" strokeWidth={3} />
