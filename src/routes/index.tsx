@@ -30,8 +30,8 @@ const steps = [
 
 function Index() {
   return (
-    <div className="min-h-screen bg-page py-5 px-3 sm:py-8 sm:px-4">
-      <main className="mx-auto w-full max-w-[460px] rounded-3xl bg-card px-4 py-5 shadow-card sm:px-8 sm:py-7">
+    <div className="min-h-screen bg-page py-6 px-4 sm:py-10 sm:px-4">
+      <main className="mx-auto w-full max-w-[380px] rounded-[2rem] bg-card px-5 py-6 shadow-card sm:px-8 sm:py-8">
         <img
           src={giftCard}
           alt="$500 Foot Locker gift card"
