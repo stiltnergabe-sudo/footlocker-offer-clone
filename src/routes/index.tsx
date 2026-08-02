@@ -37,7 +37,7 @@ function Index() {
           alt="$500 Foot Locker gift card"
           width={1024}
           height={640}
-          className="mx-auto w-full max-w-[330px] rounded-xl sm:max-w-[380px]"
+          className="mx-auto w-full max-w-[300px] rounded-xl sm:max-w-[340px]"
         />
 
         <div className="mt-5 flex justify-center sm:mt-6">
