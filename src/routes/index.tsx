@@ -58,7 +58,7 @@ function Index() {
           Unlock your exclusive reward.
         </p>
 
-        <h2 className="mt-5 text-center text-lg font-extrabold text-foreground sm:mt-7 sm:text-xl">How to Start</h2>
+        <h2 className="mt-7 text-center text-lg font-extrabold text-foreground sm:mt-8 sm:text-xl">How to Start</h2>
 
 
         <ol className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
