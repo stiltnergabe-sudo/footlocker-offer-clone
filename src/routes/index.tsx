@@ -30,33 +30,34 @@ const steps = [
 
 function Index() {
   return (
-    <div className="min-h-screen bg-page py-6 px-3 sm:py-10 sm:px-4">
-      <main className="mx-auto w-full max-w-[520px] rounded-3xl bg-card px-4 py-6 shadow-card sm:px-10 sm:py-8">
+    <div className="min-h-screen bg-page py-5 px-3 sm:py-8 sm:px-4">
+      <main className="mx-auto w-full max-w-[460px] rounded-3xl bg-card px-4 py-5 shadow-card sm:px-8 sm:py-7">
         <img
           src={giftCard}
           alt="$500 Foot Locker gift card"
           width={1024}
           height={640}
-          className="mx-auto w-full max-w-[360px] rounded-2xl shadow-elevated sm:max-w-[420px]"
+          className="mx-auto w-full max-w-[330px] rounded-xl sm:max-w-[380px]"
         />
 
-        <div className="mt-6 flex justify-center sm:mt-10">
-          <span className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-[11px] font-extrabold uppercase tracking-widest text-brand sm:px-5 sm:py-3 sm:text-xs">
-            <span className="h-2 w-2 rounded-full bg-brand" />
+        <div className="mt-5 flex justify-center sm:mt-6">
+          <span className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-[10px] font-extrabold uppercase tracking-widest text-brand sm:text-[11px]">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand" />
             Exclusive Offer
           </span>
         </div>
 
-        <h1 className="mt-4 text-center text-3xl font-extrabold leading-tight tracking-tight text-foreground sm:mt-6 sm:text-[2.5rem]">
+        <h1 className="mt-3 text-center text-[1.6rem] font-extrabold leading-[1.15] tracking-tight text-foreground sm:mt-4 sm:text-[2.1rem]">
           Get a <span className="text-brand">$500</span> Foot Locker
           <br />
           Gift Card Today
         </h1>
-        <p className="mt-3 text-center text-base font-medium text-muted-foreground sm:mt-5 sm:text-lg">
+        <p className="mt-2 text-center text-sm font-medium text-muted-foreground sm:mt-3 sm:text-base">
           Unlock your exclusive reward.
         </p>
 
-        <h2 className="mt-7 text-center text-xl font-extrabold text-foreground sm:mt-10 sm:text-2xl">How to Start</h2>
+        <h2 className="mt-5 text-center text-lg font-extrabold text-foreground sm:mt-7 sm:text-xl">How to Start</h2>
+
 
         <ol className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
           {steps.map((step, i) => (
