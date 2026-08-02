@@ -59,18 +59,18 @@ function Index() {
         <h2 className="mt-5 text-center text-lg font-extrabold text-foreground sm:mt-7 sm:text-xl">How to Start</h2>
 
 
-        <ol className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
+        <ol className="mt-3 space-y-2.5 sm:mt-4 sm:space-y-3">
           {steps.map((step, i) => (
             <li
               key={step}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-4 shadow-step sm:gap-4 sm:px-5 sm:py-5"
+              className="flex items-center gap-3 rounded-xl border border-border bg-card px-3.5 py-3 shadow-step sm:px-4 sm:py-3.5"
             >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-foreground text-base font-extrabold text-primary-foreground sm:h-11 sm:w-11 sm:text-lg">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-foreground text-sm font-extrabold text-primary-foreground sm:h-9 sm:w-9 sm:text-base">
                 {i + 1}
               </span>
-              <span className="min-w-0 flex-1 text-sm font-bold text-foreground sm:text-base">{step}</span>
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-success-muted sm:h-9 sm:w-9">
-                <Check className="h-4 w-4 text-success sm:h-5 sm:w-5" strokeWidth={3} />
+              <span className="min-w-0 flex-1 text-sm font-bold text-foreground">{step}</span>
+              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-success-muted">
+                <Check className="h-3.5 w-3.5 text-success" strokeWidth={3} />
               </span>
             </li>
           ))}
@@ -79,17 +79,18 @@ function Index() {
         <a
           href="https://trksy.org/aff_c?offer_id=1727&aff_id=152053"
           rel="noopener noreferrer"
-          className="mt-7 flex w-full items-center justify-center gap-3 rounded-2xl bg-foreground py-5 text-lg font-extrabold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-[1.01] sm:mt-9 sm:py-6 sm:text-xl"
+          className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-xl bg-foreground py-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-[1.01] sm:mt-6 sm:py-4.5 sm:text-lg"
         >
           Get Started
-          <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={3} />
+          <ArrowRight className="h-5 w-5" strokeWidth={3} />
         </a>
 
-        <p className="mt-5 text-center text-xs font-semibold leading-relaxed text-muted-foreground sm:mt-7 sm:text-sm">
+        <p className="mt-4 text-center text-[11px] font-semibold leading-relaxed text-muted-foreground sm:mt-5 sm:text-xs">
           This is a promotional offer. Completion of tasks required to qualify.
           <br />
           Terms &amp; conditions apply. Void where prohibited.
         </p>
+
       </main>
     </div>
   );
