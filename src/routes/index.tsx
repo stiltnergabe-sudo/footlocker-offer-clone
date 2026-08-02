@@ -59,16 +59,16 @@ function Index() {
         <h2 className="mt-5 text-center text-lg font-extrabold text-foreground sm:mt-7 sm:text-xl">How to Start</h2>
 
 
-        <ol className="mt-3 space-y-2.5 sm:mt-4 sm:space-y-3">
+        <ol className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
           {steps.map((step, i) => (
             <li
               key={step}
-              className="flex items-center gap-3 rounded-xl border border-border bg-card px-3.5 py-3 shadow-step sm:px-4 sm:py-3.5"
+              className="flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-4 shadow-sm sm:px-5 sm:py-4.5"
             >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-foreground text-sm font-extrabold text-primary-foreground sm:h-9 sm:w-9 sm:text-base">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-foreground text-sm font-extrabold text-primary-foreground sm:h-9 sm:w-9 sm:text-base">
                 {i + 1}
               </span>
-              <span className="min-w-0 flex-1 text-sm font-bold text-foreground">{step}</span>
+              <span className="min-w-0 flex-1 text-sm font-semibold text-foreground sm:text-base">{step}</span>
               <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-success-muted">
                 <Check className="h-3.5 w-3.5 text-success" strokeWidth={3} />
               </span>
