@@ -85,7 +85,7 @@ function Index() {
           <ArrowRight className="h-5 w-5" strokeWidth={3} />
         </a>
 
-        <p className="mt-4 text-center text-[11px] font-semibold leading-relaxed text-muted-foreground sm:mt-5 sm:text-xs">
+        <p className="mt-4 text-center text-[11px] font-medium leading-relaxed text-muted-foreground/80 sm:mt-5 sm:text-xs">
           This is a promotional offer. Completion of tasks required to qualify.
           <br />
           Terms &amp; conditions apply. Void where prohibited.
