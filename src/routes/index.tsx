@@ -1,96 +1,111 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
-import giftCard from "@/assets/giftcard.png";
+import { useEffect, useState } from "react";
+import { ArrowRight, Check, ChevronDown, ExternalLink, ShieldCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import logo from "@/assets/fomo-logo.png.asset.json";
+import { claimAmount, canClaim, COUNTRIES, isSolAddress, SURVEY_URL, type Age } from "@/lib/claim";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Get a $500 Foot Locker Gift Card Today" },
-      {
-        name: "description",
-        content:
-          "Claim your exclusive $500 Foot Locker gift card offer. Apply, enter your info, complete deals, and claim your reward.",
-      },
-      { property: "og:title", content: "Get a $500 Foot Locker Gift Card Today" },
-      {
-        property: "og:description",
-        content: "Unlock your exclusive $500 Foot Locker reward in four simple steps.",
-      },
-    ],
-  }),
+  head: () => ({ meta: [
+    { title: "FOMO | Steps to claim" },
+    { name: "description", content: "Confirm your eligibility and visit the survey and deals offer with FOMO." },
+    { property: "og:title", content: "FOMO | Steps to claim" },
+    { property: "og:description", content: "Your FOMO claim checklist: age, country, survey and deals." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
   component: Index,
 });
 
-const steps = [
-  "Click Apply Now",
-  "Enter your email & basic info",
-  "Complete recommended deals",
-  "Claim the reward",
-];
+function AnimatedAmount({ amount }: { amount: number }) {
+  const [display, setDisplay] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setDisplay(amount); return; }
+    const start = performance.now();
+    let frame = 0;
+    // The previous settled amount is the start of each transition.
+    const from = display;
+    const tick = (time: number) => {
+      const progress = Math.min((time - start) / 650, 1);
+      setDisplay(Math.round(from + (amount - from) * (1 - Math.pow(1 - progress, 3))));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+    // Only restart when the target changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount]);
+  return <span className="inline-block min-w-[4ch] text-left tabular-nums">${display}</span>;
+}
 
 function Index() {
+  const [age, setAge] = useState<Age>(null);
+  const [country, setCountry] = useState("");
+  const [surveyOpened, setSurveyOpened] = useState(false);
+  const [error, setError] = useState("");
+  const [surveyError, setSurveyError] = useState(false);
+  const [address, setAddress] = useState("");
+  const [addressState, setAddressState] = useState<"idle" | "valid" | "invalid">("idle");
+  const amount = claimAmount(age, country);
+  const completed = Number(age === "over") + Number(Boolean(country)) + Number(surveyOpened);
+  const openSurvey = () => { setSurveyOpened(true); setSurveyError(false); setError(""); };
+  const claim = () => {
+    if (!surveyOpened) { setError("complete survey and deals to claim"); setSurveyError(true); return; }
+    if (!canClaim(age, country, surveyOpened)) { setError(age !== "over" ? "Confirm you are over 18 to continue." : "Select your country to continue."); return; }
+    window.location.assign(SURVEY_URL);
+  };
+
   return (
-    <div className="min-h-screen bg-page py-5 px-3 sm:py-8 sm:px-4">
-      <main className="mx-auto w-full max-w-[460px] rounded-3xl bg-card px-4 py-5 shadow-card sm:px-8 sm:py-7">
-        <img
-          src={giftCard}
-          alt="$500 Foot Locker gift card"
-          width={1024}
-          height={640}
-          className="mx-auto w-full max-w-[330px] rounded-xl sm:max-w-[380px]"
-        />
-
-        <div className="mt-5 flex justify-center sm:mt-6">
-          <span className="inline-flex items-center gap-2 rounded-full bg-foreground px-4 py-2 text-[10px] font-extrabold uppercase tracking-widest text-brand sm:text-[11px]">
-            <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-            Exclusive Offer
-          </span>
+    <div className="min-h-screen bg-page px-4 py-6 sm:py-10">
+      <main className="claim-panel mx-auto w-full max-w-[460px] rounded-2xl bg-card px-5 py-6 shadow-card sm:px-8 sm:py-8">
+        <header className="mb-7 flex items-center gap-3 border-b border-border pb-5">
+          <img src={logo.url} width={48} height={48} alt="FOMO logo" className="h-12 w-12 rounded-lg" />
+          <span className="text-2xl font-bold">FOMO</span>
+          <ShieldCheck className="ml-auto size-5 text-muted-foreground" aria-hidden="true" />
+        </header>
+        <div className="mb-5 flex items-center justify-between gap-2">
+          <h1 className="text-2xl font-bold">Steps to claim</h1>
+          <span className="text-xs text-muted-foreground">{completed} / 3</span>
         </div>
-
-        <h1 className="mt-3 text-center text-[1.6rem] font-extrabold leading-[1.15] tracking-tight text-foreground sm:mt-4 sm:text-[2.1rem]">
-          Get a <span className="text-brand">$500</span> Foot Locker
-          <br />
-          Gift Card Today
-        </h1>
-        <p className="mt-2 text-center text-sm font-medium text-muted-foreground sm:mt-3 sm:text-base">
-          Unlock your exclusive reward.
-        </p>
-
-        <h2 className="mt-5 text-center text-lg font-extrabold text-foreground sm:mt-7 sm:text-xl">How to Start</h2>
-
-
-        <ol className="mt-4 space-y-3 sm:mt-5 sm:space-y-4">
-          {steps.map((step, i) => (
-            <li
-              key={step}
-              className="flex items-center gap-4 rounded-xl border border-border bg-card px-4 py-4 sm:px-5 sm:py-4.5"
-            >
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-foreground text-sm font-extrabold text-primary-foreground sm:h-9 sm:w-9 sm:text-base">
-                {i + 1}
-              </span>
-              <span className="min-w-0 flex-1 text-sm font-semibold text-foreground sm:text-base">{step}</span>
-              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-success-muted">
-                <Check className="h-3.5 w-3.5 text-success" strokeWidth={3} />
-              </span>
-            </li>
-          ))}
+        <ol className="space-y-4">
+          <li className={`claim-step ${age === "over" ? "is-complete" : ""}`}>
+            <div className="flex items-center gap-3">
+              <span className="step-number">{age === "over" ? <Check className="size-4" /> : "1"}</span>
+              <h2 className="text-base font-semibold">Confirm age</h2>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <Button variant={age === "over" ? "default" : "outline"} className={`h-11 shadow-none ${age === "over" ? "confirmed-control" : ""}`} aria-pressed={age === "over"} onClick={() => { setAge("over"); setError(""); }}>Over 18 {age === "over" && <Check />}</Button>
+              <Button variant="outline" className="h-11 shadow-none" aria-pressed={age === "under"} onClick={() => { setAge("under"); setError("You must be over 18 to claim."); }}>Under 18</Button>
+            </div>
+          </li>
+          <li className={`claim-step ${country ? "is-complete" : ""}`}>
+            <div className="flex items-center gap-3"><span className="step-number">{country ? <Check className="size-4" /> : "2"}</span><h2 className="text-base font-semibold">Which country are you in?</h2></div>
+            <div className="relative mt-4">
+              <select aria-label="Country" value={country} onChange={(event) => { setCountry(event.target.value); setError(""); }} className={`country-select ${country ? "confirmed-control" : ""}`}>
+                <option value="" disabled>Select country</option>
+                {COUNTRIES.map((option) => <option key={option} value={option}>{option}</option>)}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-3.5 size-4" />
+            </div>
+          </li>
+          <li className={`claim-step ${surveyError ? "is-error" : ""}`}>
+            <div className="flex items-center gap-3"><span className="step-number">3</span><h2 className="text-base font-semibold">Complete survey and deals</h2></div>
+            <Button asChild variant="outline" className="mt-4 h-11 w-full shadow-none"><a href={SURVEY_URL} target="_blank" rel="noopener noreferrer" onClick={openSurvey}>Click here <ExternalLink /></a></Button>
+            {surveyOpened && <p className="mt-3 text-xs text-muted-foreground">Offer opened. Completion is verified by the offer provider.</p>}
+          </li>
         </ol>
-
-        <a
-          href="https://trksy.org/aff_c?offer_id=1727&aff_id=152053"
-          rel="noopener noreferrer"
-          className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-xl bg-foreground py-4 text-base font-extrabold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-[1.01] sm:mt-6 sm:py-4.5 sm:text-lg"
-        >
-          Get Started
-          <ArrowRight className="h-5 w-5" strokeWidth={3} />
-        </a>
-
-        <p className="mt-4 text-center text-[11px] font-medium leading-relaxed text-muted-foreground/80 sm:mt-5 sm:text-xs">
-          This is a promotional offer. Completion of tasks required to qualify.
-          <br />
-          Terms &amp; conditions apply. Void where prohibited.
-        </p>
-
+        {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
+        <Button onClick={claim} className="mt-5 h-14 w-full gap-2 text-lg font-bold shadow-none" aria-label={`Claim $${amount}`}>
+          Claim <AnimatedAmount amount={amount} /><ArrowRight className="ml-1" />
+        </Button>
+        <form className="mt-6 border-t border-border pt-5" onSubmit={(event) => { event.preventDefault(); setAddressState(isSolAddress(address) ? "valid" : "invalid"); }}>
+          <label htmlFor="sol-address" className="mb-2 flex justify-between gap-2 text-xs font-medium">SOL deposit address <span className="font-normal text-muted-foreground">Optional</span></label>
+          <div className="flex gap-2"><Input id="sol-address" value={address} onChange={(event) => { setAddress(event.target.value); setAddressState("idle"); }} placeholder="Paste SOL address" className="h-11 min-w-0 text-sm" autoComplete="off" spellCheck={false} /><Button type="submit" variant="outline" className="h-11 w-11 shrink-0 p-0 shadow-none" aria-label="Confirm address"><ArrowRight /></Button></div>
+          <p role="status" className={`mt-2 text-[10px] font-semibold ${addressState === "valid" ? "text-success" : "text-destructive"}`}>{addressState === "valid" ? "adress confirmed" : addressState === "invalid" ? "Enter a valid SOL address. MUST BE FOMO DEPOSIT ADRESS" : "MUST BE FOMO DEPOSIT ADRESS"}</p>
+          {addressState === "valid" && <p className="mt-1 text-[10px] text-muted-foreground">Format checked only. FOMO ownership is not verified.</p>}
+        </form>
+        <p className="mt-5 text-center text-[10px] leading-relaxed text-muted-foreground">Displayed amounts are conditional offer amounts, not a wallet balance.<br />Survey and deal requirements apply. No payout is processed here.</p>
       </main>
     </div>
   );

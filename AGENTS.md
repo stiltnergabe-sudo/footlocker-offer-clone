@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep claim eligibility, amount calculation, and address-format validation in a browser-safe pure module with rule tests so display state cannot imply server-verified survey completion or wallet ownership.
+- Treat survey interactions as outbound offer visits, not completion verification; the offer provider owns qualification and payouts.
