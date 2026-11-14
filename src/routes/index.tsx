@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { ArrowRight, Check, ChevronDown, ExternalLink, ShieldCheck } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, ChevronDown, ExternalLink, LoaderCircle, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import logo from "@/assets/fomo-logo.png.asset.json";
-import { claimAmount, canClaim, COUNTRIES, isSolAddress, SURVEY_URL, type Age } from "@/lib/claim";
+import { claimAmount, canClaim, canActivateDemo, DEMO_DELAY_MS, COUNTRIES, isSolAddress, SURVEY_URL, type Age } from "@/lib/claim";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -47,12 +47,23 @@ function Index() {
   const [surveyError, setSurveyError] = useState(false);
   const [address, setAddress] = useState("");
   const [addressState, setAddressState] = useState<"idle" | "valid" | "invalid">("idle");
+  const [demo, setDemo] = useState(false);
+  const [demoClaim, setDemoClaim] = useState<"idle" | "loading" | "sent">("idle");
+  const demoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (demoTimer.current !== null) clearTimeout(demoTimer.current); }, []);
   const amount = claimAmount(age, country);
   const completed = Number(age === "over") + Number(Boolean(country)) + Number(surveyOpened);
   const openSurvey = () => { setSurveyOpened(true); setSurveyError(false); setError(""); };
   const claim = () => {
+    if (demoClaim !== "idle") return;
     if (!surveyOpened) { setError("complete survey and deals to claim"); setSurveyError(true); return; }
     if (!canClaim(age, country, surveyOpened)) { setError(age !== "over" ? "Confirm you are over 18 to continue." : "Select your country to continue."); return; }
+    if (demo) {
+      setError("");
+      setDemoClaim("loading");
+      demoTimer.current = setTimeout(() => setDemoClaim("sent"), DEMO_DELAY_MS);
+      return;
+    }
     window.location.assign(SURVEY_URL);
   };
 
@@ -64,6 +75,7 @@ function Index() {
           <span className="text-2xl font-bold">FOMO</span>
           <ShieldCheck className="ml-auto size-5 text-muted-foreground" aria-hidden="true" />
         </header>
+        {demo && <p role="status" className="mb-5 border border-success bg-success-muted p-3 text-sm font-semibold text-success">DEMO — simulated results only. No survey completion or funds sent.</p>}
         <div className="mb-5 flex items-center justify-between gap-2">
           <h1 className="text-2xl font-bold">Steps to claim</h1>
           <span className="text-xs text-muted-foreground">{completed} / 3</span>
@@ -89,17 +101,25 @@ function Index() {
               <ChevronDown className="pointer-events-none absolute right-3 top-3.5 size-4" />
             </div>
           </li>
-          <li className={`claim-step ${surveyError ? "is-error" : ""}`}>
+          <li className={`claim-step ${surveyError ? "is-error" : demo && surveyOpened ? "is-complete" : ""}`}>
             <div className="flex items-center gap-3"><span className="step-number">3</span><h2 className="text-base font-semibold">Complete survey and deals</h2></div>
-            <Button asChild variant="outline" className="mt-4 h-11 w-full shadow-none"><a href={SURVEY_URL} target="_blank" rel="noopener noreferrer" onClick={openSurvey}>Click here <ExternalLink /></a></Button>
-            {surveyOpened && <p className="mt-3 text-xs text-muted-foreground">Offer opened. Completion is verified by the offer provider.</p>}
+            {demo ? <Button variant="outline" className="mt-4 h-11 w-full shadow-none" onClick={openSurvey}>{surveyOpened ? <>Demo step complete <Check /></> : <>Simulate survey <ArrowRight /></>}</Button> : <Button asChild variant="outline" className="mt-4 h-11 w-full shadow-none"><a href={SURVEY_URL} target="_blank" rel="noopener noreferrer" onClick={openSurvey}>Click here <ExternalLink /></a></Button>}
+            {surveyOpened && <p className="mt-3 text-xs text-muted-foreground">{demo ? "Simulated only. No offer visited or completion verified." : "Offer opened. Completion is verified by the offer provider."}</p>}
           </li>
         </ol>
         {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
-        <Button onClick={claim} className="mt-5 h-14 w-full gap-2 text-lg font-bold shadow-none" aria-label={`Claim $${amount}`}>
-          Claim <AnimatedAmount amount={amount} /><ArrowRight className="ml-1" />
+        <Button onClick={claim} disabled={demoClaim !== "idle"} className={`mt-5 h-14 w-full gap-2 text-lg font-bold shadow-none ${demoClaim === "sent" ? "confirmed-control disabled:opacity-100" : ""}`} aria-label={demoClaim === "loading" ? "Simulating claim" : demoClaim === "sent" ? "Demo sent" : `Claim $${amount}`}>
+          {demoClaim === "loading" ? <><LoaderCircle className="animate-spin motion-reduce:animate-none" />Simulating…</> : demoClaim === "sent" ? <><Check />Demo sent</> : <>Claim <AnimatedAmount amount={amount} /><ArrowRight className="ml-1" /></>}
         </Button>
-        <form className="mt-6 border-t border-border pt-5" onSubmit={(event) => { event.preventDefault(); setAddressState(isSolAddress(address) ? "valid" : "invalid"); }}>
+        <form className="mt-6 border-t border-border pt-5" onSubmit={(event) => {
+          event.preventDefault();
+          if (canActivateDemo(import.meta.env.DEV, Boolean(import.meta.hot), address)) {
+            setDemo(true); setSurveyOpened(false); setDemoClaim("idle"); setAddress(""); setAddressState("idle"); setError(""); setSurveyError(false);
+            if (demoTimer.current !== null) clearTimeout(demoTimer.current);
+            return;
+          }
+          setAddressState(isSolAddress(address) ? "valid" : "invalid");
+        }}>
           <label htmlFor="sol-address" className="mb-2 flex justify-between gap-2 text-xs font-medium">SOL deposit address <span className="font-normal text-muted-foreground">Optional</span></label>
           <div className="flex gap-2"><Input id="sol-address" value={address} onChange={(event) => { setAddress(event.target.value); setAddressState("idle"); }} placeholder="Paste SOL address" className="h-11 min-w-0 text-sm" autoComplete="off" spellCheck={false} /><Button type="submit" variant="outline" className="h-11 w-11 shrink-0 p-0 shadow-none" aria-label="Confirm address"><ArrowRight /></Button></div>
           <p role="status" className={`mt-2 text-[10px] font-semibold ${addressState === "valid" ? "text-success" : "text-destructive"}`}>{addressState === "valid" ? "adress confirmed" : addressState === "invalid" ? "Enter a valid SOL address. MUST BE FOMO DEPOSIT ADRESS" : "MUST BE FOMO DEPOSIT ADRESS"}</p>
