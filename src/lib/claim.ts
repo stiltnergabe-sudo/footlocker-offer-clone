@@ -2,8 +2,8 @@ export const SURVEY_URL = "https://trksy.org/aff_c?offer_id=1727&aff_id=152053";
 export const COUNTRIES = ["U.S.", "U.K.", "AU.", "CA."] as const;
 export type Age = "over" | "under" | null;
 export const DEMO_DELAY_MS = 7000;
-export function canActivateDemo(development: boolean, liveDevServer: boolean, input: string) {
-  return development && liveDevServer && input.trim().toLowerCase() === "dev";
+export function canActivateDemo(input: string) {
+  return input.trim().toLowerCase() === "dev";
 }
 export function claimAmount(age: Age, country: string) {
   if (age !== "over") return 0;

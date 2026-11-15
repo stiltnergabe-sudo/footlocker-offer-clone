@@ -11,4 +11,4 @@
 
 - Keep claim eligibility, amount calculation, and address-format validation in a browser-safe pure module with rule tests so display state cannot imply server-verified survey completion or wallet ownership.
 - Treat survey interactions as outbound offer visits, not completion verification; the offer provider owns qualification and payouts.
-- Allow labeled claim simulations only when both Vite development mode and a live HMR server are present; production builds must never activate the demo keyword or simulate offer completion or payment.
+- Demo keyword simulations must always show a visible DEMO MODE banner and demo-labeled results; they never visit the offer or process payment.

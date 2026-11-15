@@ -75,7 +75,7 @@ function Index() {
           <span className="text-2xl font-bold">FOMO</span>
           <ShieldCheck className="ml-auto size-5 text-muted-foreground" aria-hidden="true" />
         </header>
-        {demo && <p role="status" className="mb-5 border border-success bg-success-muted p-3 text-sm font-semibold text-success">DEMO — simulated results only. No survey completion or funds sent.</p>}
+        {demo && <p role="status" className="mb-5 border border-success bg-success-muted p-3 text-sm font-semibold text-success">DEMO MODE — simulated results only. No survey completion or funds sent.</p>}
         <div className="mb-5 flex items-center justify-between gap-2">
           <h1 className="text-2xl font-bold">Steps to claim</h1>
           <span className="text-xs text-muted-foreground">{completed} / 3</span>
@@ -113,7 +113,7 @@ function Index() {
         </Button>
         <form className="mt-6 border-t border-border pt-5" onSubmit={(event) => {
           event.preventDefault();
-          if (canActivateDemo(import.meta.env.DEV, Boolean(import.meta.hot), address)) {
+          if (canActivateDemo(address)) {
             setDemo(true); setSurveyOpened(false); setDemoClaim("idle"); setAddress(""); setAddressState("idle"); setError(""); setSurveyError(false);
             if (demoTimer.current !== null) clearTimeout(demoTimer.current);
             return;

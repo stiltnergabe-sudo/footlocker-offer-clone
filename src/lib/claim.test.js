@@ -2,12 +2,10 @@ import { describe, expect, test } from "bun:test";
 import { claimAmount, canClaim, COUNTRIES, isSolAddress, SURVEY_URL, canActivateDemo, DEMO_DELAY_MS } from "./claim";
 
 describe("claim rules", () => {
-  test("demo activates only on the live development server", () => {
-    expect(canActivateDemo(true, true, "dev")).toBe(true);
-    expect(canActivateDemo(false, true, "dev")).toBe(false);
-    expect(canActivateDemo(true, false, "dev")).toBe(false);
-    expect(canActivateDemo(false, false, "dev")).toBe(false);
-    expect(canActivateDemo(true, true, "not-dev")).toBe(false);
+  test("demo activates with the keyword dev", () => {
+    expect(canActivateDemo("dev")).toBe(true);
+    expect(canActivateDemo(" DEV ")).toBe(true);
+    expect(canActivateDemo("devx")).toBe(false);
   });
   test("simulated claim waits seven seconds", () => expect(DEMO_DELAY_MS).toBe(7000));
   test("starts at $0", () => expect(claimAmount(null, "")).toBe(0));
